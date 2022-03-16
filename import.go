@@ -6,14 +6,26 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"sync"
 	"time"
 )
 
 const GROUP_SIZE = time.Hour * 2
 
 func process(file1 string, file2 string) (datasetA map[int][]Locations, datasetB map[int][]Locations) {
-	datasetA = open(file1)
-	datasetB = open(file2)
+	var wg sync.WaitGroup
+
+	wg.Add(2)
+	go func() {
+		datasetA = open(file1)
+		wg.Done()
+	}()
+	go func() {
+		datasetB = open(file2)
+		wg.Done()
+	}()
+	wg.Wait()
+
 	return
 }
 
