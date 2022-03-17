@@ -10,9 +10,9 @@ import (
 	"time"
 )
 
-const GROUP_SIZE = time.Hour * 2
+const GroupSize = int64((time.Hour * 2) / time.Millisecond)
 
-func process(file1 string, file2 string) (datasetA map[int][]Locations, datasetB map[int][]Locations) {
+func process(file1 string, file2 string) (datasetA map[int64][]Locations, datasetB map[int64][]Locations) {
 	var wg sync.WaitGroup
 
 	wg.Add(2)
@@ -24,12 +24,12 @@ func process(file1 string, file2 string) (datasetA map[int][]Locations, datasetB
 		datasetB = open(file2)
 		wg.Done()
 	}()
-	wg.Wait()
 
+	wg.Wait()
 	return
 }
 
-func open(file string) map[int][]Locations {
+func open(file string) map[int64][]Locations {
 	contents, err := os.Open(file)
 	if err != nil {
 		log.Fatal("Unable to open " + fmt.Sprintf(file))
@@ -52,11 +52,11 @@ func open(file string) map[int][]Locations {
 
 }
 
-func categorize(locationHistory GoogleLocationHistory) map[int][]Locations {
-	groups := make(map[int][]Locations)
+func categorize(locationHistory GoogleLocationHistory) map[int64][]Locations {
+	groups := make(map[int64][]Locations)
 
 	for _, location := range locationHistory.Locations {
-		groupId := int(location.Timestamp.Duration / GROUP_SIZE)
+		groupId := location.Timestamp.ms / GroupSize
 		groups[groupId] = append(groups[groupId], location)
 	}
 
