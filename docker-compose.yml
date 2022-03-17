@@ -1,0 +1,18 @@
+version: "2.1"
+services:
+  mariadb:
+    image: lscr.io/linuxserver/mariadb
+    container_name: mariadb
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - MYSQL_ROOT_PASSWORD=ROOT_PASSWORD
+      - TZ=America/Denver
+      - MYSQL_DATABASE=GFLY #optional
+      - MYSQL_USER=gfly #optional
+      - MYSQL_PASSWORD=PASSWORD #optional
+    volumes:
+      - ./data:/config
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
