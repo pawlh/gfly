@@ -37,7 +37,6 @@ type Timestamp struct {
 func (ts *Timestamp) UnmarshalJSON(data []byte) error {
 	str := string(data)
 	str = str[1:][:len(str)-2]
-	// 2013-09-27T19:00:13.013Z
 	date, err := time.Parse("2006-01-02T15:04:05.999Z", str)
 	if err != nil {
 		return err
