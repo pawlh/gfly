@@ -12,7 +12,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	setA, setB := process(args[0], args[1])
-	fmt.Print(len(setA))
-	fmt.Print(len(setB))
+	setA, _ := process(args[0], args[1])
+	save(setA, "Paul1")
+	// save(setB, "Paul2")
 }
