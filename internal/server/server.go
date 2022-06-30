@@ -8,13 +8,10 @@ import (
 func Start() {
 	router := gin.Default()
 
+	registerRoutes(router)
+
 	router.Use(static.Serve("/", static.LocalFile("./frontend/build", true)))
 
-	router.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong",
-		})
-	})
 	err := router.Run()
 	if err != nil {
 		return
